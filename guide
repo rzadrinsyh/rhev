@@ -1,4 +1,0 @@
-installing ovirt-engine
---bash
-yum install ovirt-engine -y
---
