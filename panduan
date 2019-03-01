@@ -1,0 +1,121 @@
+#install ovirt engine
+yum install ovirt-engine -y
+
+#configure ovirt-engine
+engine-setup
+
+#install ovirt-node
+menggunakan file iso
+hostname diisi dengan nodeb.workshop.com
+
+#access ovirt engine 
+(a). run administrator notepad
+(b). open C:\windows\system32\drivers\etc\hosts
+(c). tambahkan hostname dan ip, vm engine kedalam file hosts
+(d). dapat diakeses dengan https://engine.workshop.com pada browser
+(e). pilih Administration Portal username admin dan password redhat
+
+#access ovirt node
+tambahkan hostname dan ip, vm nodea.workshop.com dan nodeb.workshop.com kedalam file hosts
+
+#Create new data center
+Create two new data centers named datacenter1 and datacenter2.
+(a). Log in to the Administration Portal as admin from the engine.workshop.com profile,
+     using redhat as a password.
+(b). Click the Data Centers tab.
+(c). Click the New button in the Data Centers tab.
+(d). In the New Data Center window, enter datacenter1 in the Name field. Keep the
+     default values for the other fields. Click OK to create the data center.
+(e). In the pop-up window titled Data Center - Guide Me, click Configure Later.
+(f). Click the Data Centers tab.
+(g). Click the New button in the Data Centers tab.
+(h). In the New Data Center window, enter datacenter2 in the Name field. Keep the
+     default values for the other fields. Click OK to create the data center.
+(i). In the pop-up window titled Data Center - Guide Me, click Configure Later.
+
+#Create New Cluster
+Within the datacenter1 data center, create a new cluster named cluster1.
+(a). the New Cluster window, select datacenter1 in the Data Center menu. Make sure
+     that the General section is being displayed, and enter the following configuration
+     settings:
+     • Enter cluster1 in the Name field.
+     • Select ovirtmgmt in the Management Network menu.
+     • Select x86_64 in the CPU Architecture menu.
+     • Select 4.3 in the Compatibility Version menu.
+     • Select Linux Bridge in the Switch type menu.
+     • Select the Enable Virt Service check box to allow hosts in this cluster to run virtual
+       machines.
+     • Keep the default values for the other fields.
+(b). Click OK to create the cluster1 cluster
+(c). and repeat for cluster in datacenter2
+
+#Register and activate node hosts
+Register the nodea.workshop.com node host with your ovirt environment. Its IP
+address is (IP nodea vm). Its root password is redhat.
+When finished, make sure it has activated and is Up.
+   (a). Click the Hosts tab.
+   (b). Click the New button to add nodea.workshop.com to your node environment.
+   (c). In the New Host dialog window, click on the Host Cluster drop-down list and choose
+        the cluster1 cluster in the datacenter1 data center.
+   (d). In the Name text field, type in the nodea.workshop.com name.
+   (e). In the Address field, type the servera IP address as (IP nodea vm).
+   (f). In the Password field, type redhat as password for the local root user.
+   (g). Leave all other options as they are. Click the OK button.
+   (h). When the Power Management Configuration appears, click the OK button. Wait for the
+        registration process to finish.
+   (i). repeat for nodeb.workshop.com and that IP address & different cluster
+   
+#Create Additional Logical Networks
+(a). In the Administration Portal dashboard, click the Networks tab to access
+     the network configuration for the data centers. Click the New button to create a new
+     network. In the New Logical Network dialog window, fill in the fields using the following
+     information:
+     Data Center         : datacenter1
+     name                : virtual
+     enable vlan tagging : enabled (enter VLAN number 10)
+     VM network          : 10
+(b). Click the New button to create a new logical network.
+     In the New Logical Network dialog window, fill in the fields using the following
+     information:
+     Data Center         : datacenter1
+     name                : storage
+     enable vlan tagging : disabled
+     VM network          : disabled
+(c). Click the New button to create a new logical network.
+     In the New Logical Network dialog window, fill in the fields using the following
+     information:
+     Data Center         : datacenter2
+     name                : storage
+     enable vlan tagging : disabled
+     VM network          : disabled
+ 
+#Manage Logical Networks
+On nodea, assign the virtual logical network to its eth0 network interface, and the
+storage logical network to its eth1 network interface. The IPv4 configuration of virtual
+should use DHCP. The IPv4 configuration of storage should be set statically, using the IP
+address nodea and the netmask 255.255.255.0.
+(a). Click the Hosts tab.
+(b). From the list of available hosts, choose servera.lab.example.com by clicking on it.
+(c). In the lower part of the page, click on the Network Interfaces tab.
+(d). Click the Setup Host Networks button to change that host network configuration.
+(e). In the Setup Host servera.lab.example.com Networks dialog window, click and drag the
+     storage box from the right side to the left side of the window. Drop that box onto the
+     no network assigned field, next to the eth1 network interface.
+(f). Click and drag the virtual (VLAN 10) box from the right side to the left side of the
+     window. Drop that box onto the eth0 interface field. After dropping it, you should see
+     two logical networks assigned to the eth0 interface.
+(g). Click on the pencil icon inside the storage box. In the Edit Network storage dialog
+     window, under Boot Protocol, click the radio button next to Static label.
+(h). In the IP field, type in IP nodeb as the IP address of servera in that network.
+(i). In the Netmask/Routing Prefix field, type in 255.255.255.0 as netmask.
+(j). Click the OK button to save the settings.
+(k). Ensure that the check boxes near Verify connectivity between Host and Engine and
+     Save network configuration options are selected.
+(l). Click the OK button to confirm and save the new network configuration for that host.
+(m). repeat for nodeb
+
+#Create new storage domain
+
+#create new ISO storage domain
+#create additonal logical networks
+#upload centos iso to the ISO storage domain
